@@ -7,7 +7,11 @@ interface Comments {
   id: string;
   text: string;
   timestamp: string;
-  username?: string;
+  parent_id?: string;
+  from: {
+    id: string;
+    username: string;
+  };
 }
 
 interface Media {
@@ -33,7 +37,6 @@ export function useMedia() {
       return;
     }
     getMedia(userId!, accessToken).then((mediaList) => {
-      console.log(mediaList);
       setMediaList(mediaList);
     });
   }, [accessToken, userId]);

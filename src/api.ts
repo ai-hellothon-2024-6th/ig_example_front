@@ -69,6 +69,9 @@ export async function reply(
   text: string,
   accessToken: string
 ) {
+  console.log("commentId", commentId);
+  console.log("text", text);
+  console.log("accessToken", accessToken);
   const response = await fetch(`${baseUrl}/reply`, {
     method: "POST",
     headers: {
@@ -80,7 +83,9 @@ export async function reply(
       message: text,
     }),
   });
+  console.log(await response.text());
   if (!response.ok) {
     throw new Error("Failed to reply");
   }
+  console.log("3");
 }

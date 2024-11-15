@@ -3,10 +3,14 @@ import { useMedia } from "../hooks/useMedia";
 
 const MediaList = () => {
   const mediaList = useMedia();
-  const { commentId, setCommentId, submitReply } = useComment();
+  const { commentId, setCommentId, submitReply, setCommentFrom, commentFrom } =
+    useComment();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    submitReply(e.currentTarget["text"].value);
+    submitReply(
+      e.currentTarget["text"].value,
+      e.currentTarget["isReply"].checked
+    );
   };
 
   if (!mediaList.length) {
@@ -23,6 +27,12 @@ const MediaList = () => {
             <label>
               댓글 : <input name="text" />
             </label>
+            <br />
+            <label>
+              <input type="checkbox" name="isReply" />
+              <code>@</code> 붙이기 ({commentFrom})
+            </label>
+            <br />
             <button>등록</button>
           </>
         )}
@@ -51,10 +61,17 @@ const MediaList = () => {
                 <div
                   key={comment.id}
                   style={{ border: "1px solid black", padding: "8px" }}
-                  onClick={() => setCommentId(comment.id)}
+                  onClick={() => {
+                    setCommentId(comment.id);
+                    setCommentFrom(comment.from.username);
+                  }}
                 >
-                  <p>[{comment.username ?? "나"}]</p>
-                  <p>{comment.timestamp}</p>
+                  <strong>{comment.from.username}</strong>
+                  <p>댓글 ID : {comment.id}</p>
+                  {comment.parent_id && (
+                    <p>부모 댓글 ID : {comment.parent_id}</p>
+                  )}
+                  <p>{new Date(comment.timestamp).toLocaleString()}</p>
                   <p>{comment.text}</p>
                 </div>
               ))}
