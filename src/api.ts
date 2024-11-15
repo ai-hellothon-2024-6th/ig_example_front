@@ -69,16 +69,15 @@ export async function reply(
   text: string,
   accessToken: string
 ) {
-  console.log(commentId, text, accessToken);
   const response = await fetch(`${baseUrl}/reply`, {
-    method: "GET",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       access_token: accessToken,
       comment_id: commentId,
-      text,
+      message: text,
     }),
   });
   if (!response.ok) {
